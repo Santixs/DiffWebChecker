@@ -9,7 +9,6 @@ import os
 import subprocess
 import threading
 
-
 url_list = ['http://fi.upm.es/?id=gradoingenieriainformatica', 'http://fi.upm.es/?id=grupoliderazgointernacional']
 
 event = threading.Event()

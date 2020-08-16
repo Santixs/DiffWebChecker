@@ -5,7 +5,6 @@ import os
 
 
 
-
 def load_files(file1, file2):
     global text, text2, lines, f, f2
 
