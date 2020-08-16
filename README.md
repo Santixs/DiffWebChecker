@@ -13,3 +13,5 @@ DiffWebChecker is a summer project with the purpose of learning how to interact 
 5º - A message along the pdf is sent through the telegram API to a Telegram bot.
 
 
+Example:
+![alt text](https://github.com/Santixs/DiffWebChecker/blob/master/doc/Example1Readme.png)
