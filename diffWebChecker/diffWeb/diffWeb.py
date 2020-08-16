@@ -18,12 +18,13 @@ def load_files(file1, file2):
     text2 = f2.readlines()
 
     diff = difflib.unified_diff(text, text2, fromfile='file1', tofile='file2', lineterm='', n=0)
-    lines = list(diff)[1:]
-
+    lines = list(diff)[1:]    
     f.close()
     f2.close()
 
-
+    #to see manually the changes
+    '''for i in difflib.unified_diff(text, text2, fromfile='file1', tofile='file2', lineterm='', n=0):
+        print(i)'''
 
            
 
@@ -43,25 +44,25 @@ def whatIs(line,start):
     i=1
     minus=0
     plus=0
-    while(start+i<len(line) and line[start+i] !="@" ): 
-        if line[start+i][0] =='-':minus+=1
-        else: plus+=1
+    while(start+i<len(line) and line[start+i][0] !="@" ):         
+        if line[start+i][0] =='-':minus+=1; 
+        elif line[start+i][0] =='+': plus+=1; 
         i+=1
 
     if plus==0: return "deleted"    
     elif minus==0: return "added"
-    elif plus==minus: return "changes"
+    elif plus==minus:return "changes"
     else: return "both"
 
 def modHtml(numText,color):
     global text, text2
     if numText==1:
         text[firstI-1] = f'<fieldset style="background-color:{color}";>{text[firstI-1]}'  
-        text[firstI+firstL-1] = f'{text[firstI+firstL-1]}</fieldset>'
-        text2 = text2[0:firstI-1] + ['<fieldset style="background-color:#f3a7a7";></fieldset>'] + text2[firstI-1:]
+        text[firstI+firstL-1] = f'{text[firstI+firstL-1]}</fieldset>'        
     else:
         text2[secondI-1] = f'<fieldset style="background-color:{color}";>{text2[secondI-1]}'  
         text2[secondI+secondL-1] = f'{text2[secondI+secondL-1]}</fieldset>'
+        
 
 def generate_HTML(file1,file2):        
     if(len(lines)==0):return False #There is no changes  
@@ -69,17 +70,19 @@ def generate_HTML(file1,file2):
         for i in lines:        
             if i[0] == '@':        
                 getIndex(i)
+                
                 what= whatIs(lines,lines.index(i))    
-                if(what=="deleted"): 
+                if(what=="deleted"):                     
                     modHtml(1,"#f3a7a7")
                     
-                elif(what=="added"):
+                elif(what=="added"):                    
                     modHtml(2,"#bff3a7")
                     
-                elif(what=="changes"): 
+                elif(what=="changes"):                     
                     modHtml(2,"#f3e9a7")
                     
-                else: #Deleted and changes  
+                    
+                else: #Deleted and changes                     
                     modHtml(2,"#bff3a7")
                     modHtml(1,"#f3a7a7")         
                     

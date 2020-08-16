@@ -2,8 +2,6 @@ from diffWeb import diffWeb
 from telegram_integration import telegramBot
 from pdf_generator import generatePdf
 
-import time
-from pywebcopy import save_webpage
 import pdfkit
 from pathlib import Path
 import shutil
