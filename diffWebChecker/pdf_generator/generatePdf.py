@@ -10,7 +10,7 @@ def generate_PDF_from_HTML(HTMLfile,pdfFile):
        
 
 def generate_pdf_from_two_pdf(file1,file2,out):
-        #we merge both pdfs and put the pages together to ease comparing them
+    #we merge both pdfs and put the pages together to ease comparing them
     oldFile = PdfFileReader(open(file1,'rb'))
     newFile = PdfFileReader(open(file2,'rb'))
 
@@ -23,8 +23,8 @@ def generate_pdf_from_two_pdf(file1,file2,out):
 
     numberOld=writerOld.getNumPages()
     numberNew=writerNew.getNumPages()
-
-    if numberNew>numberOld:
+    
+    if numberNew>numberOld: #If the number of pages is not the same, we add white pages to the file with fewer pages
         while(writerNew.getNumPages()>writerOld.getNumPages()):
             writerOld.addBlankPage()
     elif(numberNew<numberOld):
@@ -34,12 +34,12 @@ def generate_pdf_from_two_pdf(file1,file2,out):
 
     writer = PdfFileWriter()
     
-    for i in range(writerOld.getNumPages()):        
+    for i in range(writerOld.getNumPages()):   
         oldFilePage = writerOld.getPage(i)
         newFilePage = writerNew.getPage(i)
-        translated_page = pdf.PageObject.createBlankPage(None, writerOld.getPage(0).mediaBox.getHeight(), writerNew.getPage(0).mediaBox.getWidth())   
-        translated_page.mergeScaledTranslatedPage(oldFilePage, 0.7, 0, 0) 
-        translated_page.mergeScaledTranslatedPage(newFilePage, 0.7, 420, 0)
+        translated_page = pdf.PageObject.createBlankPage(None, writerOld.getPage(0).mediaBox.getHeight(), writerNew.getPage(0).mediaBox.getWidth())  #We create a horizontal page
+        translated_page.mergeScaledTranslatedPage(oldFilePage, 0.7, 0, 0) #We put the page of the first file with 70% of the size on the left side of the page
+        translated_page.mergeScaledTranslatedPage(newFilePage, 0.7, 420, 0) #We put the page of the second file with 70% of the size on the right side of the page
         writer.addPage(translated_page)
 
 

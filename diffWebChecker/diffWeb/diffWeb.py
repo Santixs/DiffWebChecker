@@ -42,7 +42,7 @@ def whatIs(line,start):
     i=1
     minus=0
     plus=0
-    while(start+i<len(line) and line[start+i][0] !="@" ):         
+    while(start+i<len(line) and line[start+i][0] !="@" ):  #We count all the minuses and pluses (separately)   
         if line[start+i][0] =='-':minus+=1; 
         elif line[start+i][0] =='+': plus+=1; 
         i+=1
@@ -80,7 +80,7 @@ def generate_HTML(file1,file2):
                     modHtml(2,"#f3e9a7")
                     
                     
-                else: #Deleted and changes                     
+                else: #Deleted and changes, both                
                     modHtml(2,"#bff3a7")
                     modHtml(1,"#f3a7a7")         
                     
