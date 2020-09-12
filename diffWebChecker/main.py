@@ -7,18 +7,16 @@ from pathlib import Path
 import shutil
 import os
 import subprocess
-import threading
+
 
 #All the urls that we want to track
 url_list = ['http://fi.upm.es/?id=gradoingenieriainformatica', 'http://fi.upm.es/?id=grupoliderazgointernacional']
 
-event = threading.Event()
 
 for url in url_list:
 
-    webName = url[url.find("//")+2:].replace("/","|") # Example: http://fi.upm.es/?id=gradoingenieriainformatica  ->   fi.upm.es|?id=gradoingenieriainformatica
+    webName = url[url.find("//")+2:].replace("/","_") # Example: http://fi.upm.es/?id=gradoingenieriainformatica  ->   fi.upm.es_?id=gradoingenieriainformatica
     domainName =url[url.find("//")+2:url.find("/",8)] # Example: http://fi.upm.es/?id=gradoingenieriainformatica  ->   fi.upm.es
-
 
 
     #If the pdfFiles directory for that webpage does not exit, then it is created
@@ -40,28 +38,28 @@ for url in url_list:
         #We load the 2 html files to make the comparison in the following line and if there is any changes we generate the pdfs
         diffWeb.load_files(f"files/htmlFiles/{webName}/newestWeb/{domainName}/{htmlFileName}",f"files/htmlFiles/{webName}/newestWeb(Aux)/{domainName}/{htmlFileName}")
         if(diffWeb.generate_HTML(f"files/htmlFiles/{webName}/newestWeb/{domainName}/zzdiff.html",f"files/htmlFiles/{webName}/newestWeb(Aux)/{domainName}/zzdiff.html")):#If there is changes 
-            
-            event.wait(2)        
-            shutil.rmtree(f"/files/htmlFiles/{webName}/oldestWeb/", ignore_errors=True) #Delete the oldest version of the web
-            event.wait(1)       
+                              
+            shutil.rmtree(f"/files/htmlFiles/{webName}/oldestWeb/", ignore_errors=True) #Delete the oldest version of the web                  
             if(os.path.isdir(f"files/htmlFiles/{webName}/oldestWeb/newestweb")):shutil.rmtree(f"/files/htmlFiles/{webName}/oldestWeb/newestweb", ignore_errors=True) 
             
+
             generatePdf.generate_PDF_from_HTML(f"files/htmlFiles/{webName}/newestWeb(Aux)/{domainName}/zzdiff.html",f"files/pdfFiles/{webName}/newest_diff.pdf")#We generate the pdf from the html file
+
             shutil.move(f"files/htmlFiles/{webName}/newestWeb",f"files/htmlFiles/{webName}/oldestWeb") #Since we have downloaded a new version of the web, the name of the previous version, is now "oldestWeb"
             shutil.move(f"files/htmlFiles/{webName}/newestWeb(Aux)",f"files/htmlFiles/{webName}/newestWeb") #Since we have downloaded a new version of the web and there is some changes, the name of the aux version, is now "newestWeb"
-            
-            event.wait(1)      
+                            
             
             generatePdf.generate_PDF_from_HTML(f"files/htmlFiles/{webName}/oldestWeb/{domainName}/zzdiff.html",f"files/pdfFiles/{webName}/oldest_diff.pdf")#We generate the pdf from the html file
-            event.wait(1)
             generatePdf.generate_pdf_from_two_pdf(f"files/pdfFiles/{webName}/oldest_diff.pdf",f"files/pdfFiles/{webName}/newest_diff.pdf",f"files/pdfFiles/{webName}/diff.pdf")
             #We generate one pdf from the 2 generated pdfs and with each page one next to the other
-            event.wait(1)
+            
             shutil.rmtree(f"/files/htmlFiles/{webName}/oldestWeb/{domainName}/zzdiff.html", ignore_errors=True) #Delete the oldest htmlDiff
             shutil.rmtree(f"/files/htmlFiles/{webName}/newestWeb/{domainName}/zzdiff.html", ignore_errors=True) #Delete the newest htmlDiff
 
-            #Telegram
-            telegramBot.new_version(url,f"files/pdfFiles/{webName}/diff.pdf") #We send a message through the telegram api to a bot with the url and the pdf file generated previously
+            #Telegram ------------------------------------------------------------------
+            telegramBot.new_version(url,f"files/pdfFiles/{webName}/diff.pdf")
+            #We send a message through the telegram api to a bot with the url and the pdf file generated previously
+
 
         else: #if the version of the web downloaded has no changes
             print("There is no changes")
