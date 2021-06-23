@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from diffWeb import diffWeb
 from telegram_integration import telegramBot
 from pdf_generator import generatePdf

@@ -1,6 +1,7 @@
+*.pyc
 diffWebChecker/telegram_integration/token.txt
 diffWebChecker/telegram_integration/chatID.txt
 files/
 env/
 others/
-
+venv/
