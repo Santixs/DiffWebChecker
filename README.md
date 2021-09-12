@@ -15,3 +15,7 @@ DiffWebChecker is a summer project with the purpose of learning how to interact 
 
 Example:
 ![alt text](https://github.com/Santixs/DiffWebChecker/blob/master/doc/Example1Readme.png)
+
+To make the telegram integration work, it is necessary to create a token.txt file (with the token) and a chatID.txt file (with the ID of the group what the bot will use to send you the alerts). 
+
+The main.py should be executed from the 'DiffWebChecker' folder.
